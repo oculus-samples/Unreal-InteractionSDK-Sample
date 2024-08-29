@@ -1,0 +1,47 @@
+{
+    "FileVersion": 3,
+    "EngineAssociation": "5.4",
+    "Category": "",
+    "Description": "",
+    "Modules": [
+        {
+            "Name": "MetaIsdkSample",
+            "Type": "Runtime",
+            "LoadingPhase": "Default",
+            "AdditionalDependencies": [
+                "Engine"
+            ]
+        }
+    ],
+    "Plugins": [
+        {
+            "Name": "ModelingToolsEditorMode",
+            "Enabled": true,
+            "TargetAllowList": [
+                "Editor"
+            ]
+        },
+        {
+            "Name": "EditorTests",
+            "Enabled": true
+        },
+        {
+            "Name": "OculusInteraction",
+            "Enabled": true,
+            "SupportedTargetPlatforms": [
+                "Win64",
+                "Android"
+            ]
+        },
+        {
+            "Name": "OculusXR",
+            "Enabled": true,
+            "Optional": true,
+            "MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/8313d8d7e7cf4e03a33e79eb757bccba",
+            "SupportedTargetPlatforms": [
+                "Win64",
+                "Android"
+            ]
+        }
+    ]
+}
