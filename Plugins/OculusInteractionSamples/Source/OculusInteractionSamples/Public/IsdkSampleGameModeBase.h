@@ -18,15 +18,27 @@
  * limitations under the License.
  */
 
-using UnrealBuildTool;
-using EpicGames.Core;
+#pragma once
 
-public class MetaIsdkSampleTarget : TargetRules
+#include "CoreMinimal.h"
+#include "GameFramework/GameModeBase.h"
+#include "IsdkSampleGameModeBase.generated.h"
+
+/**
+ *
+ */
+UCLASS()
+class OCULUSINTERACTIONSAMPLES_API AIsdkSampleGameModeBase : public AGameModeBase
 {
-    public MetaIsdkSampleTarget(TargetInfo Target) : base(Target)
-    {
-        Type = TargetType.Game;
-        DefaultBuildSettings = BuildSettingsVersion.V4;
-        ExtraModuleNames.AddRange(new[] { "MetaIsdkSample" });
-    }
-}
+  GENERATED_BODY()
+
+  /*
+   * 0 = Controller + Hands (Procedural)
+   * 1 = Controller + Hands (Animated)
+   * 2 = Controller Only
+   * 3 = Hands Only (Procedural)
+   * 4 = Hands Only (Animated)
+   */
+  UFUNCTION(Exec)
+  void ISDK_SetControllerHandBehavior(int ControllerHandBehavior);
+};

@@ -57,10 +57,11 @@ class OCULUSINTERACTIONSAMPLES_API AIsdkLevelTransitionMenu : public AActor
   void UpdateBorderMesh();
   void UpdateVersionLabel();
 
+  UFUNCTION()
+  void HandlePointerEvent(const FIsdkInteractionPointerEvent& PointerEvent);
+
  protected:
   virtual void BeginPlay() override;
-  UFUNCTION()
-  void HandlePointerEvent(FIsdkInteractionPointerEvent PointerEvent);
 
   UPROPERTY()
   TMap<EIsdkSampleLevel, UIsdkRoundedButtonComponent*> TransitionButtons;

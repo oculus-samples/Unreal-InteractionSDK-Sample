@@ -18,15 +18,14 @@
  * limitations under the License.
  */
 
-using UnrealBuildTool;
-using EpicGames.Core;
+#include "IsdkSampleGameModeBase.h"
 
-public class MetaIsdkSampleTarget : TargetRules
+#include "IsdkFunctionLibrary.h"
+#include "StructTypes.h"
+
+void AIsdkSampleGameModeBase::ISDK_SetControllerHandBehavior(int ControllerHandBehavior)
 {
-    public MetaIsdkSampleTarget(TargetInfo Target) : base(Target)
-    {
-        Type = TargetType.Game;
-        DefaultBuildSettings = BuildSettingsVersion.V4;
-        ExtraModuleNames.AddRange(new[] { "MetaIsdkSample" });
-    }
+  EControllerHandBehavior BehaviorAsEnum =
+      static_cast<EControllerHandBehavior>(ControllerHandBehavior);
+  UIsdkFunctionLibrary::SetControllerHandBehavior(GetWorld(), BehaviorAsEnum);
 }

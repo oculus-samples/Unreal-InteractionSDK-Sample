@@ -178,7 +178,7 @@ void AIsdkLevelTransitionMenu::BeginPlay()
   TransitionToLevel(InitialLevel);
 }
 
-void AIsdkLevelTransitionMenu::HandlePointerEvent(FIsdkInteractionPointerEvent PointerEvent)
+void AIsdkLevelTransitionMenu::HandlePointerEvent(const FIsdkInteractionPointerEvent& PointerEvent)
 {
   if (PointerEvent.Type != EIsdkPointerEventType::Select)
   {
