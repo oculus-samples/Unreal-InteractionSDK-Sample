@@ -20,31 +20,28 @@
 
 #include "IsdkObjectCatcher.h"
 
-#include "Components/ShapeComponent.h"
+#include "Components/BoxComponent.h"
 #include "Kismet/GameplayStatics.h"
 
 AIsdkObjectCatcher::AIsdkObjectCatcher()
 {
   PrimaryActorTick.bCanEverTick = true;
-  USceneComponent* root = CreateDefaultSubobject<USceneComponent>(TEXT("CatcherRoot"));
+  Collider = CreateDefaultSubobject<UBoxComponent>("Collider");
+  Collider->SetGenerateOverlapEvents(true);
 }
 
 void AIsdkObjectCatcher::BeginPlay()
 {
   Super::BeginPlay();
 
-  Collider = Cast<UPrimitiveComponent>(GetComponentByClass(UPrimitiveComponent::StaticClass()));
-  checkf(Collider != nullptr, TEXT("IsdkObjectCatcher requires collision shape to work properly"));
-
-  Collider->SetGenerateOverlapEvents(true);
   Collider->OnComponentBeginOverlap.AddDynamic(this, &AIsdkObjectCatcher::BeginOverlap);
 
-  TArray<AActor*> actors;
-  UGameplayStatics::GetAllActorsOfClass(GetWorld(), AActor::StaticClass(), actors);
-  for (auto Actor : actors)
+  TArray<AActor*> Actors;
+  UGameplayStatics::GetAllActorsOfClass(GetWorld(), AActor::StaticClass(), Actors);
+  for (auto Actor : Actors)
   {
-    auto t = Actor->GetActorTransform();
-    StartActorTransforms.Add(Actor, t);
+    auto Transform = Actor->GetActorTransform();
+    StartActorTransforms.Add(Actor, Transform);
   }
 }
 
@@ -68,16 +65,18 @@ void AIsdkObjectCatcher::BeginOverlap(
     const FHitResult& SweepResult)
 {
   // don't want to reset the location of the pawn!
-  if (Cast<APawn>(OtherActor) == nullptr)
+  if (!OtherActor || Cast<APawn>(OtherActor))
   {
-    OtherActor->GetRootComponent()->ComponentVelocity.Set(0, 0, 0);
-    const auto Transform = StartActorTransforms.Find(OtherActor);
-    OtherActor->SetActorTransform(*Transform);
-    if (const auto PhysicsComponent = Cast<UPrimitiveComponent>(
-            OtherActor->GetComponentByClass(UPrimitiveComponent::StaticClass())))
-    {
-      PhysicsComponent->SetPhysicsLinearVelocity(FVector::Zero());
-      PhysicsComponent->SetAllPhysicsAngularVelocityInDegrees(FVector::Zero());
-    }
+    return;
+  }
+
+  OtherActor->GetRootComponent()->ComponentVelocity.Set(0, 0, 0);
+  const auto Transform = StartActorTransforms.Find(OtherActor);
+  OtherActor->SetActorTransform(*Transform);
+  if (const auto PhysicsComponent = Cast<UPrimitiveComponent>(
+          OtherActor->GetComponentByClass(UPrimitiveComponent::StaticClass())))
+  {
+    PhysicsComponent->SetPhysicsLinearVelocity(FVector::Zero());
+    PhysicsComponent->SetAllPhysicsAngularVelocityInDegrees(FVector::Zero());
   }
 }

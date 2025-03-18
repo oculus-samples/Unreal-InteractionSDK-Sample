@@ -63,6 +63,11 @@ AIsdkLevelTransitionMenu::AIsdkLevelTransitionMenu()
       FIsdkLevelButton{
           2, FName("/OculusInteractionSamples/Levels/TransformerExamples"), "Transformers"});
 
+  LevelButtons.Add(
+      EIsdkSampleLevel::DistanceGrabExamples,
+      FIsdkLevelButton{
+          3, FName("/OculusInteractionSamples/Levels/DistanceGrabExamples"), "Distance Grab"});
+
   CreateButtons();
 
   // Default values

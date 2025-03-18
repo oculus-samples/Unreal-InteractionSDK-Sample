@@ -31,7 +31,8 @@ enum class EIsdkSampleLevel : uint8
 {
   PokeExamples,
   RayExamples,
-  TransformerExamples
+  TransformerExamples,
+  DistanceGrabExamples
 };
 
 USTRUCT()
@@ -66,8 +67,11 @@ class OCULUSINTERACTIONSAMPLES_API AIsdkLevelTransitionMenu : public AActor
   UPROPERTY()
   TMap<EIsdkSampleLevel, UIsdkRoundedButtonComponent*> TransitionButtons;
 
-  UTextRenderComponent* VersionLabel;
-  UStaticMeshComponent* BorderMesh;
+  UPROPERTY()
+  TObjectPtr<UTextRenderComponent> VersionLabel;
+
+  UPROPERTY()
+  TObjectPtr<UStaticMeshComponent> BorderMesh;
 
   virtual void OnConstruction(const FTransform& Transform) override;
   virtual void PostInitializeComponents() override;

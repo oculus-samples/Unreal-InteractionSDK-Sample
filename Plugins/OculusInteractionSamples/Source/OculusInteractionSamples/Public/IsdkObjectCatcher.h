@@ -24,10 +24,13 @@
 
 #include "IsdkObjectCatcher.generated.h"
 
+class UBoxComponent;
+
 UCLASS(ClassGroup = (InteractionSDK), meta = (DisplayName = "ISDK Level Object Catcher"))
 class OCULUSINTERACTIONSAMPLES_API AIsdkObjectCatcher : public AActor
 {
   GENERATED_BODY()
+
  public:
   AIsdkObjectCatcher();
 
@@ -38,7 +41,7 @@ class OCULUSINTERACTIONSAMPLES_API AIsdkObjectCatcher : public AActor
   TMap<TObjectPtr<AActor>, FTransform> StartActorTransforms;
 
   UPROPERTY()
-  TObjectPtr<UPrimitiveComponent> Collider{nullptr};
+  TObjectPtr<UBoxComponent> Collider;
 
   UFUNCTION(BlueprintInternalUseOnly, Category = InteractionSDK)
   void BeginOverlap(
