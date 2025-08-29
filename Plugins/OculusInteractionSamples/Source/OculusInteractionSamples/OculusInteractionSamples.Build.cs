@@ -43,7 +43,8 @@ public class OculusInteractionSamples : ModuleRules
                 "MediaAssets",
                 "AudioMixer",
                 "OculusInteraction",
-                "OculusInteractionPrebuilts"
+                "OculusInteractionPrebuilts",
+                "EnhancedInput"
             }
         );
     }

@@ -26,6 +26,8 @@
 
 #include "IsdkSamplePawnClass.generated.h"
 
+class UEnhancedInputComponent;
+
 UCLASS()
 class OCULUSINTERACTIONSAMPLES_API AIsdkSamplePawnClass : public APawn, public IIsdkConsoleReceiver
 {
@@ -46,4 +48,7 @@ class OCULUSINTERACTIONSAMPLES_API AIsdkSamplePawnClass : public APawn, public I
   virtual void BeginPlay() override;
   virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
   bool ProcessConsoleCommand(const TArray<FString>& TextArgs, UWorld* World);
+
+  UPROPERTY(EditAnywhere, BlueprintReadWrite)
+  TObjectPtr<UEnhancedInputComponent> EnhancedInputComponent;
 };

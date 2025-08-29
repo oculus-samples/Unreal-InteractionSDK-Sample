@@ -20,12 +20,18 @@
 
 #include "IsdkSamplePawnClass.h"
 
+#include "EnhancedInputComponent.h"
+
 // Sets default values
 AIsdkSamplePawnClass::AIsdkSamplePawnClass()
 {
   // Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you
   // don't need it.
   PrimaryActorTick.bCanEverTick = true;
+
+  EnhancedInputComponent =
+      CreateDefaultSubobject<UEnhancedInputComponent>("EnhancedInputComponent");
+  InputComponent = EnhancedInputComponent;
 }
 
 // Called when the game starts or when spawned
