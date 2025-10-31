@@ -22,18 +22,19 @@
 
 #include "CoreMinimal.h"
 #include "IsdkInteractableWidget.h"
-#include "IsdkPokeExampleWidget.generated.h"
+#include "IsdkHorizontalScrollExampleWidget.generated.h"
 
 UCLASS(ClassGroup = (InteractionSDK))
-class OCULUSINTERACTIONSAMPLES_API AIsdkPokeExampleWidget final : public AIsdkInteractableWidget
+class OCULUSINTERACTIONSAMPLES_API AIsdkHorizontalScrollExampleWidget final
+    : public AIsdkInteractableWidget
 {
   GENERATED_BODY()
 
  public:
-  static constexpr auto PlaneScrollUIAsset =
-      TEXT("/OculusInteractionSamples/Widgets/ScrollUI/PlaneScrollUI");
+  static constexpr auto HorizontalScrollUIAsset =
+      TEXT("/OculusInteractionSamples/Widgets/ScrollUI/HorizontalScrollUI");
 
-  AIsdkPokeExampleWidget();
+  AIsdkHorizontalScrollExampleWidget();
 #if WITH_EDITOR
   virtual bool CanEditChangeComponent(const UActorComponent* Component, const FProperty* InProperty)
       const override;

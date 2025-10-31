@@ -172,8 +172,9 @@ void AIsdkLevelTransitionMenu::BeginPlay()
     }
 
     auto ColorVisual = Button.Value->GetInteractableColorVisual();
+    auto SelectColor = ColorVisual->GetColorState(EIsdkInteractableState::Select);
     auto DisabledColor = ColorVisual->GetColorState(EIsdkInteractableState::Disabled);
-    DisabledColor.Color = FLinearColor(0.008, 0.036, 0.309, 1.000);
+    DisabledColor.Color = SelectColor.Color;
     ColorVisual->SetColorState(EIsdkInteractableState::Disabled, DisabledColor);
 
     Button.Value->GetPokeInteractable()->GetInteractionPointerEventDelegate().AddUniqueDynamic(

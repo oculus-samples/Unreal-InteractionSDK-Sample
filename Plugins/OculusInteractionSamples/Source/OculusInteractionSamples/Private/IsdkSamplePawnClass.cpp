@@ -32,6 +32,8 @@ AIsdkSamplePawnClass::AIsdkSamplePawnClass()
   EnhancedInputComponent =
       CreateDefaultSubobject<UEnhancedInputComponent>("EnhancedInputComponent");
   InputComponent = EnhancedInputComponent;
+
+  AutoPossessPlayer = EAutoReceiveInput::Player0;
 }
 
 // Called when the game starts or when spawned

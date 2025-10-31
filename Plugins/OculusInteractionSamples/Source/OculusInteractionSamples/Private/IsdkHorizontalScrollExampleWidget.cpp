@@ -18,13 +18,13 @@
  * limitations under the License.
  */
 
-#include "IsdkPokeExampleWidget.h"
+#include "IsdkHorizontalScrollExampleWidget.h"
 #include "IsdkContentAssetPaths.h"
 #include "Sound/SoundBase.h"
 
-AIsdkPokeExampleWidget::AIsdkPokeExampleWidget()
+AIsdkHorizontalScrollExampleWidget::AIsdkHorizontalScrollExampleWidget()
 {
-  ConstructorHelpers::FClassFinder<UUserWidget> PokeWidgetClassFinder(PlaneScrollUIAsset);
+  ConstructorHelpers::FClassFinder<UUserWidget> PokeWidgetClassFinder(HorizontalScrollUIAsset);
   if (ensureMsgf(PokeWidgetClassFinder.Succeeded(), TEXT("Could not find Poke Example UI")))
   {
     InteractableWidgetComponent->WidgetClass = PokeWidgetClassFinder.Class;
@@ -32,10 +32,10 @@ AIsdkPokeExampleWidget::AIsdkPokeExampleWidget()
   }
 
   InteractableWidgetComponent->bCreatePokeInteractable = true;
-  InteractableWidgetComponent->bCreateRayInteractable = true;
+  InteractableWidgetComponent->bCreateRayInteractable = false;
 
   InteractableWidgetComponent->bUseRoundedBoxMaterial = true;
-  InteractableWidgetComponent->DrawSize = FVector2D(800.0, 1200.0);
+  InteractableWidgetComponent->DrawSize = FVector2D(800.0, 240.0);
   InteractableWidgetComponent->WidgetScale = 0.0175;
   InteractableWidgetComponent->BackgroundColor =
       FLinearColor(FVector(0.011612, 0.024158, 0.033105));
@@ -62,7 +62,7 @@ AIsdkPokeExampleWidget::AIsdkPokeExampleWidget()
 }
 
 #if WITH_EDITOR
-bool AIsdkPokeExampleWidget::CanEditChangeComponent(
+bool AIsdkHorizontalScrollExampleWidget::CanEditChangeComponent(
     const UActorComponent* Component,
     const FProperty* InProperty) const
 {

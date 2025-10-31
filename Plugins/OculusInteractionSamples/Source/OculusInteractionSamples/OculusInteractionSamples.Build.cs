@@ -25,7 +25,7 @@ public class OculusInteractionSamples : ModuleRules
 {
     public OculusInteractionSamples(ReadOnlyTargetRules Target) : base(Target)
     {
-        IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_4;
+        IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_6;
         PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
         PublicDependencyModuleNames.AddRange(
             new[]
