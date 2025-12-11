@@ -34,7 +34,10 @@ void AIsdkObjectCatcher::BeginPlay()
 {
   Super::BeginPlay();
 
-  Collider->OnComponentBeginOverlap.AddDynamic(this, &AIsdkObjectCatcher::BeginOverlap);
+  if (IsValid(Collider))
+  {
+    Collider->OnComponentBeginOverlap.AddDynamic(this, &AIsdkObjectCatcher::BeginOverlap);
+  }
 
   TArray<AActor*> Actors;
   UGameplayStatics::GetAllActorsOfClass(GetWorld(), AActor::StaticClass(), Actors);

@@ -93,26 +93,41 @@ class OCULUSINTERACTIONSAMPLES_API AIsdkLevelTransitionMenu : public AActor
   UPROPERTY()
   TMap<EIsdkSampleLevel, FIsdkLevelButton> LevelButtons;
 
+  // Default values
+
   UPROPERTY(Category = "InteractionSDK|Label", EditAnywhere)
-  float LabelOffset;
+  float LabelOffset = 2.5f;
+
   UPROPERTY(Category = "InteractionSDK|Label", EditAnywhere)
-  float LabelSize;
+  float LabelSize = 3.0f;
 
   UPROPERTY(Category = "InteractionSDK|Border", EditAnywhere)
-  float BorderWidth;
+  float BorderWidth = 0.3f;
+
   UPROPERTY(Category = "InteractionSDK|Border", EditAnywhere)
-  FLinearColor BorderColor;
+  FLinearColor BorderColor = FLinearColor(0.0f, 0.0f, 0.0f, 0.25f);
+
   UPROPERTY(Category = "InteractionSDK|Border", EditAnywhere)
-  FVector2D BorderPadding;
+  FVector2D BorderPadding = FVector2D(2.5, 2.0);
+
   UPROPERTY(Category = "InteractionSDK|Border", EditAnywhere)
-  float CornerRadius;
+  float CornerRadius = 1.0f;
 
   UPROPERTY(Category = "InteractionSDK|Layout", EditAnywhere)
-  float GridGap;
+  float GridGap = 1.0f;
+
   UPROPERTY(Category = "InteractionSDK|Layout", EditAnywhere)
-  int GridColumns;
+  int GridColumns = 2;
+
   UPROPERTY(Category = "InteractionSDK|Button Properties", EditAnywhere)
-  FVector2D ButtonSize;
+  FVector2D ButtonSize = FVector2D(17.0, 4.0);
+
   UPROPERTY(Category = "InteractionSDK|Button Properties", EditAnywhere)
-  float ButtonLabelSize;
+  float ButtonLabelSize = 2.1f;
+
+ private:
+  void TemporarilyDisableButtons();
+  void HandleEnableButtonsTimer();
+
+  FTimerHandle DisableButtonsTimerHandle;
 };

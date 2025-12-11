@@ -69,21 +69,6 @@ AIsdkLevelTransitionMenu::AIsdkLevelTransitionMenu()
           3, FName("/OculusInteractionSamples/Levels/DistanceGrabExamples"), "Distance Grab"});
 
   CreateButtons();
-
-  // Default values
-  LabelOffset = 2.5;
-  LabelSize = 3.0;
-
-  BorderWidth = 0.3;
-  BorderColor = FLinearColor(0.0, 0.0, 0.0, 0.25);
-  BorderPadding = FVector2D(2.5, 2.0);
-  CornerRadius = 1.0;
-
-  GridGap = 1.0;
-  GridColumns = 2;
-
-  ButtonSize = FVector2D(17.0, 4.0);
-  ButtonLabelSize = 3;
 }
 
 void AIsdkLevelTransitionMenu::CreateButtons()
@@ -165,16 +150,12 @@ void AIsdkLevelTransitionMenu::BeginPlay()
   Super::BeginPlay();
   for (auto Button : TransitionButtons)
   {
-    if (Button.Key == InitialLevel)
-    {
-      Button.Value->SetActive(false);
-      Button.Value->GetPokeInteractable()->SetVisibility(false);
-    }
+    Button.Value->SetActive(false);
+    Button.Value->GetPokeInteractable()->SetVisibility(false);
 
     auto ColorVisual = Button.Value->GetInteractableColorVisual();
-    auto SelectColor = ColorVisual->GetColorState(EIsdkInteractableState::Select);
     auto DisabledColor = ColorVisual->GetColorState(EIsdkInteractableState::Disabled);
-    DisabledColor.Color = SelectColor.Color;
+    DisabledColor.Color = FLinearColor(0.3f, 0.3f, 0.3f, 0.3f);
     ColorVisual->SetColorState(EIsdkInteractableState::Disabled, DisabledColor);
 
     Button.Value->GetPokeInteractable()->GetInteractionPointerEventDelegate().AddUniqueDynamic(
@@ -229,7 +210,6 @@ void AIsdkLevelTransitionMenu::TransitionToLevel(EIsdkSampleLevel NextLevel)
 {
   PreviousLevel = CurrentLevel;
   CurrentLevel = NextLevel;
-  UpdateButtonState(NextLevel);
   FLatentActionInfo LatentInfo;
   LatentInfo.UUID = 1;
   LatentInfo.Linkage = 1;
@@ -237,6 +217,7 @@ void AIsdkLevelTransitionMenu::TransitionToLevel(EIsdkSampleLevel NextLevel)
   LatentInfo.ExecutionFunction = GET_FUNCTION_NAME_CHECKED(AIsdkLevelTransitionMenu, OnLevelLoad);
   UGameplayStatics::LoadStreamLevel(
       GetWorld(), LevelButtons.Find(NextLevel)->LevelName, true, true, LatentInfo);
+  TemporarilyDisableButtons();
 }
 
 void AIsdkLevelTransitionMenu::UpdateButtonState(EIsdkSampleLevel Level)
@@ -248,6 +229,31 @@ void AIsdkLevelTransitionMenu::UpdateButtonState(EIsdkSampleLevel Level)
     ButtonComponent->SetActive(bShouldBeActivate);
     ButtonComponent->GetPokeInteractable()->SetActive(bShouldBeActivate);
   }
+}
+
+void AIsdkLevelTransitionMenu::TemporarilyDisableButtons()
+{
+  for (auto Button : TransitionButtons)
+  {
+    auto ButtonComponent = Button.Value;
+    ButtonComponent->SetActive(false);
+    ButtonComponent->GetPokeInteractable()->SetActive(false);
+  }
+
+  // Disable all buttons and re-enable them after a short delay to help prevent crashes
+  // that may happen if the player rapidly changes levels.
+  GetWorld()->GetTimerManager().SetTimer(
+      DisableButtonsTimerHandle,
+      this,
+      &AIsdkLevelTransitionMenu::HandleEnableButtonsTimer,
+      0.3f,
+      false);
+}
+
+void AIsdkLevelTransitionMenu::HandleEnableButtonsTimer()
+{
+  // Re-enable buttons
+  UpdateButtonState(CurrentLevel);
 }
 
 void AIsdkLevelTransitionMenu::OnLevelLoad()
