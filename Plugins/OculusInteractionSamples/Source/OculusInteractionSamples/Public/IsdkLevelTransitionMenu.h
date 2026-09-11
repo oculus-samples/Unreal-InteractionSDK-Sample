@@ -42,7 +42,7 @@ struct FIsdkLevelButton
 
   size_t Index;
   FName LevelName{};
-  FString ButtonLabel{};
+  FText ButtonLabel{};
 };
 
 UCLASS(ClassGroup = (InteractionSDK), meta = (DisplayName = "ISDK Level Transition Menu"))

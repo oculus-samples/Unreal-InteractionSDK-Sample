@@ -26,7 +26,8 @@ public class MetaIsdkSampleTarget : TargetRules
     public MetaIsdkSampleTarget(TargetInfo Target) : base(Target)
     {
         Type = TargetType.Game;
-        DefaultBuildSettings = BuildSettingsVersion.V4;
+        IncludeOrderVersion = EngineIncludeOrderVersion.Latest;
+        DefaultBuildSettings = BuildSettingsVersion.V6;
         ExtraModuleNames.AddRange(new[] { "MetaIsdkSample" });
     }
 }

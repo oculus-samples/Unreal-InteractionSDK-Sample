@@ -19,13 +19,15 @@
  */
 
 using UnrealBuildTool;
-using System.Collections.Generic;
 using EpicGames.Core;
 
-public class MetaIsdkSampleEditorTarget : MetaIsdkSampleTarget
+public class MetaIsdkSampleEditorTarget : TargetRules
 {
     public MetaIsdkSampleEditorTarget(TargetInfo Target) : base(Target)
     {
         Type = TargetType.Editor;
+        IncludeOrderVersion = EngineIncludeOrderVersion.Latest;
+        DefaultBuildSettings = BuildSettingsVersion.V6;
+        ExtraModuleNames.AddRange(new[] { "MetaIsdkSample" });
     }
 }

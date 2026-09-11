@@ -52,21 +52,27 @@ AIsdkLevelTransitionMenu::AIsdkLevelTransitionMenu()
 
   LevelButtons.Add(
       EIsdkSampleLevel::PokeExamples,
-      FIsdkLevelButton{0, FName("/OculusInteractionSamples/Levels/PokeExamples"), "Poke"});
+      FIsdkLevelButton{
+          0, FName("/OculusInteractionSamples/Levels/PokeExamples"), FText::FromString("Poke")});
 
   LevelButtons.Add(
       EIsdkSampleLevel::RayExamples,
-      FIsdkLevelButton{1, FName("/OculusInteractionSamples/Levels/RayExamples"), "Ray"});
+      FIsdkLevelButton{
+          1, FName("/OculusInteractionSamples/Levels/RayExamples"), FText::FromString("Ray")});
 
   LevelButtons.Add(
       EIsdkSampleLevel::TransformerExamples,
       FIsdkLevelButton{
-          2, FName("/OculusInteractionSamples/Levels/TransformerExamples"), "Transformers"});
+          2,
+          FName("/OculusInteractionSamples/Levels/TransformerExamples"),
+          FText::FromString("Transformers")});
 
   LevelButtons.Add(
       EIsdkSampleLevel::DistanceGrabExamples,
       FIsdkLevelButton{
-          3, FName("/OculusInteractionSamples/Levels/DistanceGrabExamples"), "Distance Grab"});
+          3,
+          FName("/OculusInteractionSamples/Levels/DistanceGrabExamples"),
+          FText::FromString("Distance Grab")});
 
   CreateButtons();
 }
@@ -75,8 +81,8 @@ void AIsdkLevelTransitionMenu::CreateButtons()
 {
   for (auto LevelButton : LevelButtons)
   {
-    auto ButtonInstance =
-        CreateDefaultSubobject<UIsdkRoundedButtonComponent>(FName(LevelButton.Value.ButtonLabel));
+    auto ButtonInstance = CreateDefaultSubobject<UIsdkRoundedButtonComponent>(
+        FName(LevelButton.Value.ButtonLabel.ToString()));
     ButtonInstance->SetupAttachment(this->GetRootComponent());
     TransitionButtons.Add(LevelButton.Key, ButtonInstance);
   }
