@@ -47,7 +47,7 @@ class OCULUSINTERACTIONSAMPLES_API AIsdkSamplePawnClass : public APawn, public I
   // Called when the game starts or when spawned
   virtual void BeginPlay() override;
   virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-  bool ProcessConsoleCommand(const TArray<FString>& TextArgs, UWorld* World);
+  bool ProcessConsoleCommand(const TArray<FString>& TextArgs, UWorld* World) override;
 
   UPROPERTY(EditAnywhere, BlueprintReadWrite)
   TObjectPtr<UEnhancedInputComponent> EnhancedInputComponent;

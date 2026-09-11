@@ -30,11 +30,12 @@ void UIsdkResetTransforms::BeginPlay()
 {
   Super::BeginPlay();
 
+  InitialTransforms.Reserve(ActorsToReset.Num());
   for (AActor* Actor : ActorsToReset)
   {
     if (IsValid(Actor))
     {
-      InitialTransforms.Add(Actor->GetActorTransform());
+      InitialTransforms.Emplace(Actor->GetActorTransform());
     }
   }
 }
@@ -49,12 +50,14 @@ void UIsdkResetTransforms::TickComponent(
 
 void UIsdkResetTransforms::ResetTransforms()
 {
-  for (int32 i = 0; i < ActorsToReset.Num(); i++)
+  const int32 NumActors = ActorsToReset.Num();
+  for (int32 i = 0; i < NumActors; i++)
   {
     if (IsValid(ActorsToReset[i]))
     {
+      AActor* Actor = ActorsToReset[i];
       UPrimitiveComponent* PrimitiveComponent =
-          Cast<UPrimitiveComponent>(ActorsToReset[i]->GetRootComponent());
+          Cast<UPrimitiveComponent>(Actor->GetRootComponent());
 
       if (PrimitiveComponent && PrimitiveComponent->IsSimulatingPhysics())
       {
@@ -64,7 +67,7 @@ void UIsdkResetTransforms::ResetTransforms()
 
       if (InitialTransforms[i].IsValid())
       {
-        ActorsToReset[i]->SetActorTransform(InitialTransforms[i]);
+        Actor->SetActorTransform(InitialTransforms[i]);
       }
 
       if (PrimitiveComponent)

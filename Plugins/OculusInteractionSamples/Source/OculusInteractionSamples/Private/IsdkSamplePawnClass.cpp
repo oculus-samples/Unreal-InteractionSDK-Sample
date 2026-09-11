@@ -22,7 +22,6 @@
 
 #include "EnhancedInputComponent.h"
 
-// Sets default values
 AIsdkSamplePawnClass::AIsdkSamplePawnClass()
 {
   // Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you
@@ -36,7 +35,6 @@ AIsdkSamplePawnClass::AIsdkSamplePawnClass()
   AutoPossessPlayer = EAutoReceiveInput::Player0;
 }
 
-// Called when the game starts or when spawned
 void AIsdkSamplePawnClass::BeginPlay()
 {
   Super::BeginPlay();
@@ -50,13 +48,11 @@ void AIsdkSamplePawnClass::EndPlay(const EEndPlayReason::Type EndPlayReason)
   Super::EndPlay(EndPlayReason);
 }
 
-// Called every frame
 void AIsdkSamplePawnClass::Tick(float DeltaTime)
 {
   Super::Tick(DeltaTime);
 }
 
-// Called to bind functionality to input
 void AIsdkSamplePawnClass::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
   Super::SetupPlayerInputComponent(PlayerInputComponent);

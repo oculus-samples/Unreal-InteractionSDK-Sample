@@ -50,24 +50,25 @@ AIsdkLevelTransitionMenu::AIsdkLevelTransitionMenu()
   BorderMesh = CreateDefaultSubobject<UStaticMeshComponent>(FName("Border Mesh"));
   BorderMesh->SetupAttachment(Root);
 
-  LevelButtons.Add(
+  LevelButtons.Reserve(4);
+  LevelButtons.Emplace(
       EIsdkSampleLevel::PokeExamples,
       FIsdkLevelButton{
           0, FName("/OculusInteractionSamples/Levels/PokeExamples"), FText::FromString("Poke")});
 
-  LevelButtons.Add(
+  LevelButtons.Emplace(
       EIsdkSampleLevel::RayExamples,
       FIsdkLevelButton{
           1, FName("/OculusInteractionSamples/Levels/RayExamples"), FText::FromString("Ray")});
 
-  LevelButtons.Add(
+  LevelButtons.Emplace(
       EIsdkSampleLevel::TransformerExamples,
       FIsdkLevelButton{
           2,
           FName("/OculusInteractionSamples/Levels/TransformerExamples"),
           FText::FromString("Transformers")});
 
-  LevelButtons.Add(
+  LevelButtons.Emplace(
       EIsdkSampleLevel::DistanceGrabExamples,
       FIsdkLevelButton{
           3,
@@ -79,7 +80,7 @@ AIsdkLevelTransitionMenu::AIsdkLevelTransitionMenu()
 
 void AIsdkLevelTransitionMenu::CreateButtons()
 {
-  for (auto LevelButton : LevelButtons)
+  for (const auto& LevelButton : LevelButtons)
   {
     auto ButtonInstance = CreateDefaultSubobject<UIsdkRoundedButtonComponent>(
         FName(LevelButton.Value.ButtonLabel.ToString()));
@@ -90,7 +91,8 @@ void AIsdkLevelTransitionMenu::CreateButtons()
 
 void AIsdkLevelTransitionMenu::UpdateButtonsLayout()
 {
-  for (auto Button : TransitionButtons)
+  const FVector2D GridGapVec(GridGap, GridGap);
+  for (const auto& Button : TransitionButtons)
   {
     auto LevelButton = LevelButtons.Find(Button.Key);
     size_t i = LevelButton->Index;
@@ -99,7 +101,7 @@ void AIsdkLevelTransitionMenu::UpdateButtonsLayout()
 
     FVector2D Center = FVector2D::Zero();
     Center += ButtonSize * 0.5;
-    Center += (ButtonSize + FVector2D(GridGap, GridGap)) * FVector2D(x, y);
+    Center += (ButtonSize + GridGapVec) * FVector2D(x, y);
 
     Button.Value->ButtonSize = ButtonSize;
     Button.Value->SetLabelText(LevelButton->ButtonLabel);
@@ -154,7 +156,7 @@ void AIsdkLevelTransitionMenu::UpdateVersionLabel()
 void AIsdkLevelTransitionMenu::BeginPlay()
 {
   Super::BeginPlay();
-  for (auto Button : TransitionButtons)
+  for (const auto& Button : TransitionButtons)
   {
     Button.Value->SetActive(false);
     Button.Value->GetPokeInteractable()->SetVisibility(false);
@@ -179,7 +181,7 @@ void AIsdkLevelTransitionMenu::HandlePointerEvent(const FIsdkInteractionPointerE
   }
   bool bRequiredLevelLoad = false;
   EIsdkSampleLevel NextLevel{};
-  for (auto Button : TransitionButtons)
+  for (const auto& Button : TransitionButtons)
   {
     if (Button.Value->GetPokeInteractable() == PointerEvent.Interactable.GetObject() &&
         Button.Key != CurrentLevel)
@@ -228,7 +230,7 @@ void AIsdkLevelTransitionMenu::TransitionToLevel(EIsdkSampleLevel NextLevel)
 
 void AIsdkLevelTransitionMenu::UpdateButtonState(EIsdkSampleLevel Level)
 {
-  for (auto Button : TransitionButtons)
+  for (const auto& Button : TransitionButtons)
   {
     auto bShouldBeActivate = Button.Key != Level;
     auto ButtonComponent = Button.Value;
@@ -239,7 +241,7 @@ void AIsdkLevelTransitionMenu::UpdateButtonState(EIsdkSampleLevel Level)
 
 void AIsdkLevelTransitionMenu::TemporarilyDisableButtons()
 {
-  for (auto Button : TransitionButtons)
+  for (const auto& Button : TransitionButtons)
   {
     auto ButtonComponent = Button.Value;
     ButtonComponent->SetActive(false);

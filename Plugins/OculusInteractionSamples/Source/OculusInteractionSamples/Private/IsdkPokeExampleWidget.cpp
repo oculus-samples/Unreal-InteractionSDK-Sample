@@ -21,6 +21,9 @@
 #include "IsdkPokeExampleWidget.h"
 #include "IsdkContentAssetPaths.h"
 #include "Sound/SoundBase.h"
+#include "Components/WidgetComponent.h"
+#include "Components/AudioComponent.h"
+#include "Widget/IsdkPointableWidget.h"
 
 AIsdkPokeExampleWidget::AIsdkPokeExampleWidget()
 {

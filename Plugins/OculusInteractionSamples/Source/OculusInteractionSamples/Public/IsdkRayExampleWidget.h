@@ -24,6 +24,8 @@
 #include "IsdkInteractableWidget.h"
 #include "IsdkRayExampleWidget.generated.h"
 
+class UAudioComponent;
+
 UCLASS(ClassGroup = (InteractionSDK))
 class OCULUSINTERACTIONSAMPLES_API AIsdkRayExampleWidget final : public AIsdkInteractableWidget
 {

@@ -26,6 +26,9 @@
 
 class IOculusInteractionSamples : public IModuleInterface
 {
+ private:
+  static constexpr const TCHAR* ModuleName = TEXT("OculusInteractionSamples");
+
  public:
   /**
    * Singleton-like access to this module's interface.  This is just for convenience!
@@ -36,7 +39,7 @@ class IOculusInteractionSamples : public IModuleInterface
    */
   static inline IOculusInteractionSamples& Get()
   {
-    return FModuleManager::LoadModuleChecked<IOculusInteractionSamples>("OculusInteractionSamples");
+    return FModuleManager::LoadModuleChecked<IOculusInteractionSamples>(ModuleName);
   }
 
   /**
@@ -47,6 +50,6 @@ class IOculusInteractionSamples : public IModuleInterface
    */
   static inline bool IsAvailable()
   {
-    return FModuleManager::Get().IsModuleLoaded("OculusInteractionSamples");
+    return FModuleManager::Get().IsModuleLoaded(ModuleName);
   }
 };

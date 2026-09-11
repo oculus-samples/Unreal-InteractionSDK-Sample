@@ -63,7 +63,7 @@ void AIsdkInstructionDialog::BeginPlay()
           TEXT("Current Dialog Video Player or source is invalid")))
   {
     Widget->SetVisibility(false);
-    auto Handler = FTimerHandle();
+    FTimerHandle Handler;
     GetWorldTimerManager().SetTimer(
         Handler, this, &AIsdkInstructionDialog::OpenVideo, 0.2f, false, 1.0f);
   }
@@ -71,13 +71,13 @@ void AIsdkInstructionDialog::BeginPlay()
 
 void AIsdkInstructionDialog::OpenVideo()
 {
-  auto PlayerOptions = FMediaPlayerOptions();
+  FMediaPlayerOptions PlayerOptions;
   PlayerOptions.PlayOnOpen = EMediaPlayerOptionBooleanOverride::Enabled;
   PlayerOptions.Loop = EMediaPlayerOptionBooleanOverride::Enabled;
   DialogVideoPlayer->OnMediaOpened.AddUniqueDynamic(this, &AIsdkInstructionDialog::MediaOpened);
-  auto WillOpenVideo =
+  const bool bWillOpenVideo =
       DialogVideoPlayer->OpenSourceWithOptions(InstructionVideoSource, PlayerOptions);
-  ensureMsgf(WillOpenVideo, TEXT("Video is not going to be opened"));
+  ensureMsgf(bWillOpenVideo, TEXT("Video is not going to be opened"));
 }
 
 void AIsdkInstructionDialog::Initialize()
@@ -91,7 +91,7 @@ void AIsdkInstructionDialog::Initialize()
     Widget->SetWidget(InstructionWidget);
     Widget->SetDrawSize(WidgetSize);
     Widget->SetMaterial(0, WidgetMaterial);
-    auto MaterialInstance = Widget->GetMaterialInstance();
+    UMaterialInstanceDynamic* const MaterialInstance = Widget->GetMaterialInstance();
     UIsdkRoundedBoxFunctionLibrary::SetRoundedBoxDimensions(MaterialInstance, WidgetSize, 0.0, 0.0);
     UIsdkRoundedBoxFunctionLibrary::SetRoundedBoxMaterialCornerRadius(
         MaterialInstance, FVector4(CornerRadius, CornerRadius, CornerRadius, CornerRadius));

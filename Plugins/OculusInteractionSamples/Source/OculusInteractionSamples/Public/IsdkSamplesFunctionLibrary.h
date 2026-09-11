@@ -25,6 +25,8 @@
 
 #include "IsdkSamplesFunctionLibrary.generated.h"
 
+class APlayerController;
+
 UCLASS(BlueprintType)
 class OCULUSINTERACTIONSAMPLES_API UIsdkSamplesFunctionLibrary final
     : public UBlueprintFunctionLibrary

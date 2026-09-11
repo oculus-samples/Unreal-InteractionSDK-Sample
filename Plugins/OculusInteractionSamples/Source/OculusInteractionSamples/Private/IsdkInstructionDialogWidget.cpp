@@ -19,6 +19,7 @@
  */
 
 #include "IsdkInstructionDialogWidget.h"
+#include "Components/TextBlock.h"
 
 void UIsdkInstructionDialogWidget::SynchronizeProperties()
 {

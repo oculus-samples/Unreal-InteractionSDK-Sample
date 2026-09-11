@@ -21,6 +21,10 @@
 #include "IsdkRayExampleWidget.h"
 #include "IsdkContentAssetPaths.h"
 #include "UObject/ConstructorHelpers.h"
+#include "Components/AudioComponent.h"
+#include "Components/WidgetComponent.h"
+#include "Widget/IsdkPointableWidget.h"
+#include "Audio/IsdkWidgetEventAudioPlayer.h"
 
 AIsdkRayExampleWidget::AIsdkRayExampleWidget()
 {
@@ -36,7 +40,7 @@ AIsdkRayExampleWidget::AIsdkRayExampleWidget()
   InteractableWidgetComponent->bUseRoundedBoxMaterial = true;
   InteractableWidgetComponent->DrawSize = FVector2D(1560.0, 950.0);
   InteractableWidgetComponent->WidgetScale = 0.1;
-  InteractableWidgetComponent->BackgroundColor = FLinearColor(FVector(0.008, 0.036, 0.309));
+  InteractableWidgetComponent->BackgroundColor = FLinearColor(0.008f, 0.036f, 0.309f);
   InteractableWidgetComponent->CornerRadius = FVector4(40.0, 40.0, 40.0, 40.0);
   InteractableWidgetComponent->bTwoSided = true;
   InteractableWidgetComponent->BlendMode = EIsdkWidgetBlendMode::Transparent;
@@ -51,7 +55,7 @@ AIsdkRayExampleWidget::AIsdkRayExampleWidget()
     InteractableWidgetComponent->GetSelectedHoveredAudio()->SetSound(RayAudio.Object);
   }
   UnselectedHoveredAudio =
-      CreateDefaultSubobject<UAudioComponent>(FName("Unselected Hovered Audio"));
+      CreateDefaultSubobject<UAudioComponent>(FName(TEXT("Unselected Hovered Audio")));
   UnselectedHoveredAudio->SetupAttachment(InteractableWidgetComponent);
   UnselectedHoveredAudio->SetAutoActivate(false);
   static ConstructorHelpers::FObjectFinder<USoundWave> RayUnselect(RayUnselectHovererdAudio);
@@ -70,22 +74,16 @@ bool AIsdkRayExampleWidget::CanEditChangeComponent(
 {
   if (InProperty)
   {
-    FString PropertyName = InProperty->GetName();
+    const FName PropertyName = InProperty->GetFName();
     if (PropertyName ==
-            GET_MEMBER_NAME_STRING_CHECKED(
-                UIsdkInteractableWidgetComponent, bUseRoundedBoxMaterial) ||
+            GET_MEMBER_NAME_CHECKED(UIsdkInteractableWidgetComponent, bUseRoundedBoxMaterial) ||
+        PropertyName == GET_MEMBER_NAME_CHECKED(UIsdkInteractableWidgetComponent, DrawSize) ||
+        PropertyName == GET_MEMBER_NAME_CHECKED(UIsdkInteractableWidgetComponent, WidgetScale) ||
+        PropertyName == GET_MEMBER_NAME_CHECKED(UIsdkInteractableWidgetComponent, WidgetClass) ||
         PropertyName ==
-            GET_MEMBER_NAME_STRING_CHECKED(UIsdkInteractableWidgetComponent, DrawSize) ||
+            GET_MEMBER_NAME_CHECKED(UIsdkInteractableWidgetComponent, bCreatePokeInteractable) ||
         PropertyName ==
-            GET_MEMBER_NAME_STRING_CHECKED(UIsdkInteractableWidgetComponent, WidgetScale) ||
-        PropertyName ==
-            GET_MEMBER_NAME_STRING_CHECKED(UIsdkInteractableWidgetComponent, WidgetClass) ||
-        PropertyName ==
-            GET_MEMBER_NAME_STRING_CHECKED(
-                UIsdkInteractableWidgetComponent, bCreatePokeInteractable) ||
-        PropertyName ==
-            GET_MEMBER_NAME_STRING_CHECKED(
-                UIsdkInteractableWidgetComponent, bCreateRayInteractable))
+            GET_MEMBER_NAME_CHECKED(UIsdkInteractableWidgetComponent, bCreateRayInteractable))
     {
       return false;
     }

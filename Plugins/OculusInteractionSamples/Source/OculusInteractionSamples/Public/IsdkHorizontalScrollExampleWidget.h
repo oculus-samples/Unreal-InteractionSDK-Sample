@@ -24,6 +24,12 @@
 #include "IsdkInteractableWidget.h"
 #include "IsdkHorizontalScrollExampleWidget.generated.h"
 
+/**
+ * @brief Example widget actor demonstrating horizontal scroll functionality.
+ *
+ * This widget provides a sample implementation of a horizontally scrollable UI
+ * using the Interaction SDK.
+ */
 UCLASS(ClassGroup = (InteractionSDK))
 class OCULUSINTERACTIONSAMPLES_API AIsdkHorizontalScrollExampleWidget final
     : public AIsdkInteractableWidget
@@ -34,8 +40,15 @@ class OCULUSINTERACTIONSAMPLES_API AIsdkHorizontalScrollExampleWidget final
   static constexpr auto HorizontalScrollUIAsset =
       TEXT("/OculusInteractionSamples/Widgets/ScrollUI/HorizontalScrollUI");
 
+  /** @brief Default constructor. */
   AIsdkHorizontalScrollExampleWidget();
 #if WITH_EDITOR
+  /**
+   * @brief Determines if a component property can be edited in the editor.
+   * @param Component The component being queried.
+   * @param InProperty The property being queried for edit capability.
+   * @return True if the property can be edited, false otherwise.
+   */
   virtual bool CanEditChangeComponent(const UActorComponent* Component, const FProperty* InProperty)
       const override;
 #endif

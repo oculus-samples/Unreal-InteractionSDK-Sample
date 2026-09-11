@@ -20,10 +20,11 @@
 
 #pragma once
 
-#include "Blueprint/UserWidget.h"
-#include "Components/TextBlock.h"
 #include "CoreMinimal.h"
+#include "Blueprint/UserWidget.h"
 #include "IsdkInstructionDialogWidget.generated.h"
+
+class UTextBlock;
 
 UCLASS(Blueprintable, Abstract)
 class OCULUSINTERACTIONSAMPLES_API UIsdkInstructionDialogWidget : public UUserWidget

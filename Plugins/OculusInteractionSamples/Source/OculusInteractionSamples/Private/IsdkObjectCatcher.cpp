@@ -26,7 +26,7 @@
 AIsdkObjectCatcher::AIsdkObjectCatcher()
 {
   PrimaryActorTick.bCanEverTick = true;
-  Collider = CreateDefaultSubobject<UBoxComponent>("Collider");
+  Collider = CreateDefaultSubobject<UBoxComponent>(TEXT("Collider"));
   Collider->SetGenerateOverlapEvents(true);
 }
 
@@ -41,9 +41,9 @@ void AIsdkObjectCatcher::BeginPlay()
 
   TArray<AActor*> Actors;
   UGameplayStatics::GetAllActorsOfClass(GetWorld(), AActor::StaticClass(), Actors);
-  for (auto Actor : Actors)
+  for (AActor* Actor : Actors)
   {
-    auto Transform = Actor->GetActorTransform();
+    FTransform Transform = Actor->GetActorTransform();
     StartActorTransforms.Add(Actor, Transform);
   }
 }
@@ -74,7 +74,7 @@ void AIsdkObjectCatcher::BeginOverlap(
   }
 
   OtherActor->GetRootComponent()->ComponentVelocity.Set(0, 0, 0);
-  const auto Transform = StartActorTransforms.Find(OtherActor);
+  const FTransform* Transform = StartActorTransforms.Find(OtherActor);
   OtherActor->SetActorTransform(*Transform);
   if (const auto PhysicsComponent = Cast<UPrimitiveComponent>(
           OtherActor->GetComponentByClass(UPrimitiveComponent::StaticClass())))

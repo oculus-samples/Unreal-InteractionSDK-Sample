@@ -22,27 +22,12 @@
 
 void UIsdkSamplesFunctionLibrary::SampleGraphicSettingCommands(APlayerController* PlayerController)
 {
-  FString Command = "r.TonemapperGamma 0";
-  PlayerController->ConsoleCommand(*Command);
-
-  Command = "r.TonemapperFilm 0";
-  PlayerController->ConsoleCommand(*Command);
-
-  Command = "r.Tonemapper.Sharpen 0";
-  PlayerController->ConsoleCommand(*Command);
-
-  Command = "r.Tonemapper.GrainQuantization 0";
-  PlayerController->ConsoleCommand(*Command);
-
-  Command = "r.Tonemapper.Quality 0";
-  PlayerController->ConsoleCommand(*Command);
-
-  Command = "r.EyeAdaptation.ExponentialTransitionDistance 0";
-  PlayerController->ConsoleCommand(*Command);
-
-  Command = "r.EyeAdaptationQuality 0";
-  PlayerController->ConsoleCommand(*Command);
-
-  Command = "r.MSAACount 4";
-  PlayerController->ConsoleCommand(*Command);
+  PlayerController->ConsoleCommand(TEXT("r.TonemapperGamma 0"));
+  PlayerController->ConsoleCommand(TEXT("r.TonemapperFilm 0"));
+  PlayerController->ConsoleCommand(TEXT("r.Tonemapper.Sharpen 0"));
+  PlayerController->ConsoleCommand(TEXT("r.Tonemapper.GrainQuantization 0"));
+  PlayerController->ConsoleCommand(TEXT("r.Tonemapper.Quality 0"));
+  PlayerController->ConsoleCommand(TEXT("r.EyeAdaptation.ExponentialTransitionDistance 0"));
+  PlayerController->ConsoleCommand(TEXT("r.EyeAdaptationQuality 0"));
+  PlayerController->ConsoleCommand(TEXT("r.MSAACount 4"));
 }

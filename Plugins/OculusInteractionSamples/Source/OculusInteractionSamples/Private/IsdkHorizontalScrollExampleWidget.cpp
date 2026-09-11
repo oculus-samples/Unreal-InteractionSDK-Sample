@@ -21,6 +21,9 @@
 #include "IsdkHorizontalScrollExampleWidget.h"
 #include "IsdkContentAssetPaths.h"
 #include "Sound/SoundBase.h"
+#include "Components/WidgetComponent.h"
+#include "Components/AudioComponent.h"
+#include "Widget/IsdkPointableWidget.h"
 
 AIsdkHorizontalScrollExampleWidget::AIsdkHorizontalScrollExampleWidget()
 {
@@ -68,7 +71,7 @@ bool AIsdkHorizontalScrollExampleWidget::CanEditChangeComponent(
 {
   if (InProperty)
   {
-    FString PropertyName = InProperty->GetName();
+    const FString PropertyName = InProperty->GetName();
     if (PropertyName ==
             GET_MEMBER_NAME_STRING_CHECKED(
                 UIsdkInteractableWidgetComponent, bUseRoundedBoxMaterial) ||

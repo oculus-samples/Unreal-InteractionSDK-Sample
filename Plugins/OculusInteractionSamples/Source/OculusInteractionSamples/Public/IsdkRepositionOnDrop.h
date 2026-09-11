@@ -24,6 +24,8 @@
 #include "Components/ActorComponent.h"
 #include "IsdkRepositionOnDrop.generated.h"
 
+class USceneComponent;
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(
     FIsdkRepositionOnDropEventDelegate,
     UIsdkRepositionOnDrop*,
@@ -46,7 +48,7 @@ class OCULUSINTERACTIONSAMPLES_API UIsdkRepositionOnDrop : public UObject
   UFUNCTION(BlueprintSetter, Category = InteractionSDK)
   void SetTransformTarget(USceneComponent* Target);
   UFUNCTION(BlueprintGetter, Category = InteractionSDK)
-  USceneComponent* GetTransformTarget()
+  USceneComponent* GetTransformTarget() const
   {
     return TransformTarget;
   }
