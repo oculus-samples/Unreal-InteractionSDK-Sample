@@ -30,7 +30,8 @@
 			"Enabled": true,
 			"SupportedTargetPlatforms": [
 				"Win64",
-				"Android"
+				"Android",
+				"Linux"
 			]
 		},
 		{
@@ -43,7 +44,7 @@
 			"SupportedTargetPlatforms": [
 				"Win64",
 				"Linux",
-				"Android"
+				"Android",
 			]
 		},
 		{
@@ -52,7 +53,8 @@
 			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/2372b714e0aa46ab85168aaf035e099a",
 			"SupportedTargetPlatforms": [
 				"Win64",
-				"Android"
+				"Android",
+				"Linux"
 			]
 		}
 	]

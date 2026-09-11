@@ -24,9 +24,7 @@
 
 AIsdkSamplePawnClass::AIsdkSamplePawnClass()
 {
-  // Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you
-  // don't need it.
-  PrimaryActorTick.bCanEverTick = true;
+  PrimaryActorTick.bCanEverTick = false;
 
   EnhancedInputComponent =
       CreateDefaultSubobject<UEnhancedInputComponent>("EnhancedInputComponent");
@@ -46,11 +44,6 @@ void AIsdkSamplePawnClass::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
   UIsdkConsoleParser::UnregisterListener(this);
   Super::EndPlay(EndPlayReason);
-}
-
-void AIsdkSamplePawnClass::Tick(float DeltaTime)
-{
-  Super::Tick(DeltaTime);
 }
 
 void AIsdkSamplePawnClass::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

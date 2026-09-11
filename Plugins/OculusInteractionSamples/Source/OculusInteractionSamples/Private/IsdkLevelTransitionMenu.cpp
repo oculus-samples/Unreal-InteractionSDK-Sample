@@ -33,7 +33,7 @@ static inline constexpr auto IsdkSamplePawnPath =
 
 AIsdkLevelTransitionMenu::AIsdkLevelTransitionMenu()
 {
-  PrimaryActorTick.bCanEverTick = true;
+  PrimaryActorTick.bCanEverTick = false;
   auto Root = CreateDefaultSubobject<USceneComponent>(FName("Root"));
   SetRootComponent(Root);
 

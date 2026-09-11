@@ -27,7 +27,7 @@ public class MetaIsdkSampleEditorTarget : TargetRules
     {
         Type = TargetType.Editor;
         IncludeOrderVersion = EngineIncludeOrderVersion.Latest;
-        DefaultBuildSettings = BuildSettingsVersion.V6;
+        DefaultBuildSettings = BuildSettingsVersion.Latest;
         ExtraModuleNames.AddRange(new[] { "MetaIsdkSample" });
     }
 }

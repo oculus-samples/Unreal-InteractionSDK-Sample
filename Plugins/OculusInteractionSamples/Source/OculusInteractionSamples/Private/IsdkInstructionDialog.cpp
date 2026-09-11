@@ -27,7 +27,7 @@
 
 AIsdkInstructionDialog::AIsdkInstructionDialog()
 {
-  PrimaryActorTick.bCanEverTick = true;
+  PrimaryActorTick.bCanEverTick = false;
   Root = CreateDefaultSubobject<USceneComponent>(FName("RootComponent"));
   Widget = CreateDefaultSubobject<UWidgetComponent>(FName("Instruction Widget"));
   Widget->SetupAttachment(Root);

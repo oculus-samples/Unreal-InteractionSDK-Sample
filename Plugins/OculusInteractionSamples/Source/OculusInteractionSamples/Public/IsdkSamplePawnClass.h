@@ -37,9 +37,6 @@ class OCULUSINTERACTIONSAMPLES_API AIsdkSamplePawnClass : public APawn, public I
   // Sets default values for this pawn's properties
   AIsdkSamplePawnClass();
 
-  // Called every frame
-  virtual void Tick(float DeltaTime) override;
-
   // Called to bind functionality to input
   virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
