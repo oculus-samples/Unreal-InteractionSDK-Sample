@@ -31,7 +31,7 @@ AIsdkInstructionDialog::AIsdkInstructionDialog()
   Root = CreateDefaultSubobject<USceneComponent>(FName("RootComponent"));
   Widget = CreateDefaultSubobject<UWidgetComponent>(FName("Instruction Widget"));
   Widget->SetupAttachment(Root);
-  Widget->SetBackgroundColor(FLinearColor(0.020289, 0.020289, 0.020289, 1.0));
+  Widget->SetBackgroundColor(FLinearColor(0.020289f, 0.020289f, 0.020289f, 1.0f));
   Sound = CreateDefaultSubobject<UMediaSoundComponent>(FName("Sound Component"));
   Sound->SetupAttachment(Root);
 

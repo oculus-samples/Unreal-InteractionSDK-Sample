@@ -28,8 +28,7 @@
 #include "Subsystem/IsdkWorldSubsystem.h"
 #include "UObject/ConstructorHelpers.h"
 
-static inline constexpr auto IsdkSamplePawnPath =
-    TEXT("/OculusInteractionSamples/Blueprints/IsdkSamplePawn");
+#define LOCTEXT_NAMESPACE "IsdkLevelTransitionMenu"
 
 AIsdkLevelTransitionMenu::AIsdkLevelTransitionMenu()
 {
@@ -50,30 +49,40 @@ AIsdkLevelTransitionMenu::AIsdkLevelTransitionMenu()
   BorderMesh = CreateDefaultSubobject<UStaticMeshComponent>(FName("Border Mesh"));
   BorderMesh->SetupAttachment(Root);
 
-  LevelButtons.Reserve(4);
+  LevelButtons.Reserve(5);
+
   LevelButtons.Emplace(
       EIsdkSampleLevel::PokeExamples,
       FIsdkLevelButton{
-          0, FName("/OculusInteractionSamples/Levels/PokeExamples"), FText::FromString("Poke")});
+          0,
+          FName("/OculusInteractionSamples/Levels/PokeExamples"),
+          LOCTEXT("PokeButtonLabel", "Poke")});
 
   LevelButtons.Emplace(
       EIsdkSampleLevel::RayExamples,
       FIsdkLevelButton{
-          1, FName("/OculusInteractionSamples/Levels/RayExamples"), FText::FromString("Ray")});
+          1,
+          FName("/OculusInteractionSamples/Levels/RayExamples"),
+          LOCTEXT("RayButtonLabel", "Ray")});
 
   LevelButtons.Emplace(
       EIsdkSampleLevel::TransformerExamples,
       FIsdkLevelButton{
           2,
           FName("/OculusInteractionSamples/Levels/TransformerExamples"),
-          FText::FromString("Transformers")});
-
+          LOCTEXT("TransformerButtonLabel", "Transformers")});
   LevelButtons.Emplace(
       EIsdkSampleLevel::DistanceGrabExamples,
       FIsdkLevelButton{
           3,
           FName("/OculusInteractionSamples/Levels/DistanceGrabExamples"),
-          FText::FromString("Distance Grab")});
+          LOCTEXT("DistanceGrabButtonLabel", "Distance Grab")});
+  LevelButtons.Emplace(
+      EIsdkSampleLevel::GazeExamples,
+      FIsdkLevelButton{
+          4,
+          FName("/OculusInteractionSamples/Levels/GazeExamples"),
+          LOCTEXT("GazeButtonLabel", "Gaze")});
 
   CreateButtons();
 }
@@ -82,18 +91,49 @@ void AIsdkLevelTransitionMenu::CreateButtons()
 {
   for (const auto& LevelButton : LevelButtons)
   {
-    auto ButtonInstance = CreateDefaultSubobject<UIsdkRoundedButtonComponent>(
-        FName(LevelButton.Value.ButtonLabel.ToString()));
+    const FName ButtonName(
+        *FString::Printf(TEXT("LevelButton_%d"), static_cast<int32>(LevelButton.Value.Index)));
+    auto ButtonInstance = CreateDefaultSubobject<UIsdkRoundedButtonComponent>(ButtonName);
     ButtonInstance->SetupAttachment(this->GetRootComponent());
     TransitionButtons.Add(LevelButton.Key, ButtonInstance);
   }
 }
 
+void AIsdkLevelTransitionMenu::RebuildTransitionButtons()
+{
+  // Fully reset before repopulating so stale or null entries (e.g. left behind by
+  // editor delete+undo) are discarded rather than accumulated.
+  TransitionButtons.Reset();
+
+  TInlineComponentArray<UIsdkRoundedButtonComponent*> ButtonComponents(this);
+  for (const auto& LevelButton : LevelButtons)
+  {
+    const FName ButtonName(
+        *FString::Printf(TEXT("LevelButton_%d"), static_cast<int32>(LevelButton.Value.Index)));
+    for (UIsdkRoundedButtonComponent* ButtonComponent : ButtonComponents)
+    {
+      if (IsValid(ButtonComponent) && ButtonComponent->GetFName() == ButtonName)
+      {
+        TransitionButtons.Add(LevelButton.Key, ButtonComponent);
+        break;
+      }
+    }
+  }
+}
+
 void AIsdkLevelTransitionMenu::UpdateButtonsLayout()
 {
+  // The cache is Transient and may be empty/stale after undo/reinstancing, so
+  // rebuild it from the live components before iterating.
+  RebuildTransitionButtons();
+
   const FVector2D GridGapVec(GridGap, GridGap);
   for (const auto& Button : TransitionButtons)
   {
+    if (!IsValid(Button.Value))
+    {
+      continue;
+    }
     auto LevelButton = LevelButtons.Find(Button.Key);
     size_t i = LevelButton->Index;
     float x = float(i % GridColumns);
@@ -142,8 +182,7 @@ void AIsdkLevelTransitionMenu::UpdateVersionLabel()
       (FVector2D(GridColumns - 1, Row - 1) * FVector2D(GridGap, GridGap));
   FVector2D BorderCenter = BorderSize * 0.5;
 
-  auto VersionString = FOculusInteractionModule::GetChecked().GetVersionString();
-  VersionLabel->SetText(FText::FromString(FString("Version #") + VersionString));
+  VersionLabel->SetText(LOCTEXT("VersionLabelPlaceholder", "Version #X.X.X"));
   auto BorderCenter3d = FVector(0.0, -BorderCenter.X, -BorderCenter.Y);
   auto LabelPosition = BorderCenter3d;
   LabelPosition.Z -= LabelOffset + (BorderSize + BorderPadding).Y * 0.5;
@@ -156,8 +195,22 @@ void AIsdkLevelTransitionMenu::UpdateVersionLabel()
 void AIsdkLevelTransitionMenu::BeginPlay()
 {
   Super::BeginPlay();
+
+  // Set the dynamic build-version text at runtime only. Setting it during editor
+  // construction (OnConstruction) would serialize a transient FString-initialized
+  // FText into the saved level package, which triggers cook-time warnings.
+  const auto VersionString = FOculusInteractionModule::GetChecked().GetVersionString();
+  VersionLabel->SetText(
+      FText::Format(
+          LOCTEXT("VersionLabelFormat", "Version #{0}"), FText::AsCultureInvariant(VersionString)));
+
+  RebuildTransitionButtons();
   for (const auto& Button : TransitionButtons)
   {
+    if (!IsValid(Button.Value))
+    {
+      continue;
+    }
     Button.Value->SetActive(false);
     Button.Value->GetPokeInteractable()->SetVisibility(false);
 
@@ -170,6 +223,20 @@ void AIsdkLevelTransitionMenu::BeginPlay()
         this, &AIsdkLevelTransitionMenu::HandlePointerEvent);
   }
   bInitialTransition = true;
+
+  // Defer the initial level load by a short delay to allow the menu and render
+  // thread to fully initialize before streaming begins. This prevents a race
+  // condition where the render thread is still setting up StartLevel's scene
+  // views while the game thread is already tearing them down to stream the
+  // initial sub-level. The 0.1s delay is enough to break the race without being
+  // noticeable to the user.
+  FTimerHandle InitialLoadHandle;
+  GetWorld()->GetTimerManager().SetTimer(
+      InitialLoadHandle, this, &AIsdkLevelTransitionMenu::HandleInitialLevelLoad, 0.1f, false);
+}
+
+void AIsdkLevelTransitionMenu::HandleInitialLevelLoad()
+{
   TransitionToLevel(InitialLevel);
 }
 
@@ -218,13 +285,15 @@ void AIsdkLevelTransitionMenu::TransitionToLevel(EIsdkSampleLevel NextLevel)
 {
   PreviousLevel = CurrentLevel;
   CurrentLevel = NextLevel;
+
+  const FName LevelName = LevelButtons.Find(NextLevel)->LevelName;
+
   FLatentActionInfo LatentInfo;
   LatentInfo.UUID = 1;
   LatentInfo.Linkage = 1;
   LatentInfo.CallbackTarget = this;
   LatentInfo.ExecutionFunction = GET_FUNCTION_NAME_CHECKED(AIsdkLevelTransitionMenu, OnLevelLoad);
-  UGameplayStatics::LoadStreamLevel(
-      GetWorld(), LevelButtons.Find(NextLevel)->LevelName, true, true, LatentInfo);
+  UGameplayStatics::LoadStreamLevel(GetWorld(), LevelName, true, true, LatentInfo);
   TemporarilyDisableButtons();
 }
 
@@ -273,3 +342,5 @@ void AIsdkLevelTransitionMenu::OnLevelLoad()
   }
   bInitialTransition = false;
 }
+
+#undef LOCTEXT_NAMESPACE

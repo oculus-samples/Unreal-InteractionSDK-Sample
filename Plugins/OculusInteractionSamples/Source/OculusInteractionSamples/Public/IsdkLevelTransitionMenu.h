@@ -32,7 +32,8 @@ enum class EIsdkSampleLevel : uint8
   PokeExamples,
   RayExamples,
   TransformerExamples,
-  DistanceGrabExamples
+  DistanceGrabExamples,
+  GazeExamples
 };
 
 USTRUCT()
@@ -54,6 +55,15 @@ class OCULUSINTERACTIONSAMPLES_API AIsdkLevelTransitionMenu : public AActor
 
  private:
   void CreateButtons();
+
+  /**
+   * Rebuilds the TransitionButtons cache by scanning this actor's button
+   * components and matching each one to its EIsdkSampleLevel via the deterministic
+   * "LevelButton_<Index>" subobject name. Safe to call repeatedly; it fully resets
+   * the map first.
+   */
+  void RebuildTransitionButtons();
+
   void UpdateButtonsLayout();
   void UpdateBorderMesh();
   void UpdateVersionLabel();
@@ -61,11 +71,19 @@ class OCULUSINTERACTIONSAMPLES_API AIsdkLevelTransitionMenu : public AActor
   UFUNCTION()
   void HandlePointerEvent(const FIsdkInteractionPointerEvent& PointerEvent);
 
+  UFUNCTION()
+  void HandleInitialLevelLoad();
+
  protected:
   virtual void BeginPlay() override;
 
-  UPROPERTY()
-  TMap<EIsdkSampleLevel, UIsdkRoundedButtonComponent*> TransitionButtons;
+  // Cache mapping each sample level to its button component. Marked Transient and
+  // rebuilt via RebuildTransitionButtons(): instanced component references stored as
+  // TMap *values* are not reliably restored by the editor's undo/reinstancing system
+  // (delete + undo would otherwise leave the keys present with null values, crashing
+  // UpdateButtonsLayout).
+  UPROPERTY(Transient)
+  TMap<EIsdkSampleLevel, TObjectPtr<UIsdkRoundedButtonComponent>> TransitionButtons;
 
   UPROPERTY()
   TObjectPtr<UTextRenderComponent> VersionLabel;

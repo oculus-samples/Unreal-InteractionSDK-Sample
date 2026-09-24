@@ -39,7 +39,7 @@ AIsdkRayExampleWidget::AIsdkRayExampleWidget()
 
   InteractableWidgetComponent->bUseRoundedBoxMaterial = true;
   InteractableWidgetComponent->DrawSize = FVector2D(1560.0, 950.0);
-  InteractableWidgetComponent->WidgetScale = 0.1;
+  InteractableWidgetComponent->WidgetScale = 0.1f;
   InteractableWidgetComponent->BackgroundColor = FLinearColor(0.008f, 0.036f, 0.309f);
   InteractableWidgetComponent->CornerRadius = FVector4(40.0, 40.0, 40.0, 40.0);
   InteractableWidgetComponent->bTwoSided = true;

@@ -39,7 +39,7 @@ AIsdkPokeExampleWidget::AIsdkPokeExampleWidget()
 
   InteractableWidgetComponent->bUseRoundedBoxMaterial = true;
   InteractableWidgetComponent->DrawSize = FVector2D(800.0, 1200.0);
-  InteractableWidgetComponent->WidgetScale = 0.0175;
+  InteractableWidgetComponent->WidgetScale = 0.0175f;
   InteractableWidgetComponent->BackgroundColor =
       FLinearColor(FVector(0.011612, 0.024158, 0.033105));
   InteractableWidgetComponent->CornerRadius = FVector4(60.0, 60.0, 60.0, 60.0);

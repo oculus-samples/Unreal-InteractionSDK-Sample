@@ -27,7 +27,8 @@ void UIsdkSamplesFunctionLibrary::SampleGraphicSettingCommands(APlayerController
   PlayerController->ConsoleCommand(TEXT("r.Tonemapper.Sharpen 0"));
   PlayerController->ConsoleCommand(TEXT("r.Tonemapper.GrainQuantization 0"));
   PlayerController->ConsoleCommand(TEXT("r.Tonemapper.Quality 0"));
-  PlayerController->ConsoleCommand(TEXT("r.EyeAdaptation.ExponentialTransitionDistance 0"));
-  PlayerController->ConsoleCommand(TEXT("r.EyeAdaptationQuality 0"));
+  PlayerController->ConsoleCommand(
+      TEXT("r.EyeAdaptation.ExponentialTransitionDistance 0")); // metaxr_keyword_safe: eye
+  PlayerController->ConsoleCommand(TEXT("r.EyeAdaptationQuality 0")); // metaxr_keyword_safe: eye
   PlayerController->ConsoleCommand(TEXT("r.MSAACount 4"));
 }

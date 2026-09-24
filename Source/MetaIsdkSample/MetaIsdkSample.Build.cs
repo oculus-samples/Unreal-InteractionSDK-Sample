@@ -24,7 +24,7 @@ public class MetaIsdkSample : ModuleRules
 {
     public MetaIsdkSample(ReadOnlyTargetRules Target) : base(Target)
     {
-        IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_7;
+        IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_8;
         PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
         PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore" });
